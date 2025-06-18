@@ -1,3 +1,5 @@
+import random as rand;
+
 def corta_haste_bottom_up_completo(p, n):
     r = [0] * (n + 1)  
     d = [0] * (n + 1) 
@@ -62,8 +64,28 @@ def printAlgoritimoSimples(P, n):
         print(cortes[n], end=" ")
         n -= cortes[n]
    
-p = [0, 1, 5, 8, 9]
-n = 4
 
-printAlgoritimoMemoizado(p,n)
-printAlgoritimoSimples(p,n)
+
+# printAlgoritimoMemoizado(p,n)
+# printAlgoritimoSimples(p,n)
+
+def iniciarVetor():
+    n = rand.randint(10,10000)
+    P = []
+
+    while len(P) < n + 1:
+        valor = rand.randint(1, 400)
+        if valor not in P:
+            P.append(valor)
+    P.sort()
+    P[0] = 0
+
+    print('\nVetor P ordenado e sem repetição:')
+    for i in P:
+        print(i)
+    print('')
+
+    printAlgoritimoSimples(P, n)
+    printAlgoritimoMemoizado(P, n)
+
+iniciarVetor()

@@ -16,7 +16,6 @@ def corta_haste_bottom_up_completo(p, n):
 
     return r[n], d
 
-
 def barras_memo(P, n, memo=None, cortes=None):
     if memo is None:
         memo = [-1] * (n + 1)
@@ -50,38 +49,39 @@ def reconstruir_cortes(cortes, n):
         n -= cortes[n]
     return resultado
 
-def comparar_tempos_e_graficar():
-    tamanhos = list(range(5, 35, 5))  
-    tempos_bottom_up = []
-    tempos_memoizado = []
+for i in range(1,100):
+    def comparar_tempos_e_graficar():
+        tamanhos = list(range(5, 35, 5))  
+        tempos_bottom_up = []
+        tempos_memoizado = []
 
-    for n in tamanhos:
-        base = rand.randint(10, 20)
-        P = [0]
-        valor = 0
-        while len(P) < n + 1:
-            valor += base
-            if valor not in P:
-                P.append(valor)
-        P.sort()
+        for n in tamanhos:
+            base = rand.randint(10, 20)
+            P = [0]
+            valor = 0
+            while len(P) < n + 1:
+                valor += base
+                if valor not in P:
+                    P.append(valor)
+            P.sort()
 
-        inicio = time.time()
-        corta_haste_bottom_up_completo(P, n)
-        fim = time.time()
-        tempos_bottom_up.append(fim - inicio)
+            inicio = time.time()
+            corta_haste_bottom_up_completo(P, n)
+            fim = time.time()
+            tempos_bottom_up.append(fim - inicio)
 
-        inicio = time.time()
-        barras_memo(P, n)
-        fim = time.time()
-        tempos_memoizado.append(fim - inicio)
+            inicio = time.time()
+            barras_memo(P, n)
+            fim = time.time()
+            tempos_memoizado.append(fim - inicio)
 
-    plt.plot(tamanhos, tempos_bottom_up, marker='o', label='Bottom-Up (sem memoização)')
-    plt.plot(tamanhos, tempos_memoizado, marker='x', label='Top-Down Memoizado')
-    plt.xlabel('Tamanho da haste (n)')
-    plt.ylabel('Tempo de execução (s)')
-    plt.title('Comparação de Desempenho: Bottom-Up vs Memoização')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
+        plt.plot(tamanhos, tempos_bottom_up, marker='o', label='Bottom-Up (sem memoização)')
+        plt.plot(tamanhos, tempos_memoizado, marker='x', label='Top-Down Memoizado')
+        plt.xlabel('Tamanho da haste (n)')
+        plt.ylabel('Tempo de execução (s)')
+        plt.title('Comparação de Desempenho: Bottom-Up vs Memoização')
+        plt.legend()
+        plt.grid(True)
+        plt.show()
 
-comparar_tempos_e_graficar()
+    comparar_tempos_e_graficar()

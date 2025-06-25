@@ -75,7 +75,7 @@ def comparar_tempos_e_graficar():
         fim = time.time()
         tempos_memoizado.append(fim - inicio)
 
-    plt.plot(tamanhos, tempos_memoizado, marker='o', label='Bottom-Up (sem memoização)')
+    plt.plot(tamanhos, tempos_bottom_up, marker='o', label='Bottom-Up (sem memoização)')
     plt.plot(tamanhos, tempos_memoizado, marker='x', label='Top-Down Memoizado')
     plt.xlabel('Tamanho da haste (n)')
     plt.ylabel('Tempo de execução (s)')

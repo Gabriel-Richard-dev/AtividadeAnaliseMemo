@@ -1,4 +1,6 @@
-import random as rand;
+import random as rand
+import time
+import matplotlib.pyplot as plt
 
 def corta_haste_bottom_up_completo(p, n):
     r = [0] * (n + 1)  
@@ -14,6 +16,7 @@ def corta_haste_bottom_up_completo(p, n):
 
     return r[n], d
 
+
 def barras_memo(P, n, memo=None, cortes=None):
     if memo is None:
         memo = [-1] * (n + 1)
@@ -28,10 +31,9 @@ def barras_memo(P, n, memo=None, cortes=None):
         return 0, cortes
 
     l = P[n] if n < len(P) else float('-inf')
-    cortes[n] = n  # corte total, sem dividir
+    cortes[n] = n  
 
     for i in range(1, n):
-        # lucro se cortar na posição i
         lcandidat, _ = barras_memo(P, n - i, memo, cortes)
         lcandidat += P[i]
         if lcandidat > l:
@@ -48,44 +50,38 @@ def reconstruir_cortes(cortes, n):
         n -= cortes[n]
     return resultado
 
-def printAlgoritimoMemoizado(P, n):
-    lucro_max, cortes = barras_memo(P, n)
-    cortes_otimos = reconstruir_cortes(cortes, n)
+def comparar_tempos_e_graficar():
+    tamanhos = list(range(5, 35, 5))  
+    tempos_bottom_up = []
+    tempos_memoizado = []
 
-    print(f"Lucro máximo: {lucro_max}")
-    print(f"Cortes ótimos: {cortes_otimos}")
+    for n in tamanhos:
+        base = rand.randint(10, 20)
+        P = [0]
+        valor = 0
+        while len(P) < n + 1:
+            valor += base
+            if valor not in P:
+                P.append(valor)
+        P.sort()
 
-def printAlgoritimoSimples(P, n):    
-    valor_maximo, cortes = corta_haste_bottom_up_completo(P, n)
-    print("Valor máximo:", valor_maximo)
+        inicio = time.time()
+        corta_haste_bottom_up_completo(P, n)
+        fim = time.time()
+        tempos_bottom_up.append(fim - inicio)
 
-    print("Cortes ótimos:", end=" ")
-    while n > 0:
-        print(cortes[n], end=" ")
-        n -= cortes[n]
-   
+        inicio = time.time()
+        barras_memo(P, n)
+        fim = time.time()
+        tempos_memoizado.append(fim - inicio)
 
+    plt.plot(tamanhos, tempos_memoizado, marker='o', label='Bottom-Up (sem memoização)')
+    plt.plot(tamanhos, tempos_memoizado, marker='x', label='Top-Down Memoizado')
+    plt.xlabel('Tamanho da haste (n)')
+    plt.ylabel('Tempo de execução (s)')
+    plt.title('Comparação de Desempenho: Bottom-Up vs Memoização')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
-# printAlgoritimoMemoizado(p,n)
-# printAlgoritimoSimples(p,n)
-
-def iniciarVetor():
-    n = rand.randint(10,10000)
-    P = []
-
-    while len(P) < n + 1:
-        valor = rand.randint(1, 400)
-        if valor not in P:
-            P.append(valor)
-    P.sort()
-    P[0] = 0
-
-    print('\nVetor P ordenado e sem repetição:')
-    for i in P:
-        print(i)
-    print('')
-
-    printAlgoritimoSimples(P, n)
-    printAlgoritimoMemoizado(P, n)
-
-iniciarVetor()
+comparar_tempos_e_graficar()
